@@ -81,8 +81,8 @@ export async function POST(request: Request) {
       payload_json: brief as unknown as Record<string, unknown>,
     });
 
-    // Fire pipeline async (don't await)
-    runPipeline(update.id, incidentId, brief, lastPublishedUpdate);
+    // Await pipeline — Vercel kills the function after response, so we must complete it first
+    await runPipeline(update.id, incidentId, brief, lastPublishedUpdate);
 
     return NextResponse.json(
       { update_id: update.id, incident_id: incidentId },
